@@ -25,6 +25,7 @@ const Attendance = mongoose.model('Attendance', attendanceSchema);
 app.post('/submit-attendance', async (req, res) => {
     try {
         console.log("saved")
+        console.log(req.body)
         const newRecord = new Attendance(req.body);
         await newRecord.save();
         res.status(200).json({ message: 'Saved to MongoDB' });
