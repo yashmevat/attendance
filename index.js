@@ -7,7 +7,7 @@ const app = express();
 const port = 3000;
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
 mongoose.connect('mongodb+srv://yashmevat16:yashmevat@cluster0.bi4podh.mongodb.net/attendanceDB?retryWrites=true&w=majority&appName=Cluster0', {
     useNewUrlParser: true,
