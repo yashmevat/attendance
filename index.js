@@ -22,19 +22,25 @@ const attendanceSchema = new mongoose.Schema({
 const Attendance = mongoose.model('Attendance', attendanceSchema);
 
 app.post('/submit-attendance', async (req, res) => {
-    app.post('/submit-attendance', async (req, res) => {
     try {
-        console.log("Received body:", req.body);
-        const newRecord = new Attendance(req.body);
-        const saved = await newRecord.save();
-        console.log("Saved to DB:", saved);
-        res.status(200).json({ message: 'Saved to MongoDB', data: saved });
+        console.log("Received POST /submit-attendance");
+        console.log("Body:", req.body);  // This will show if section and data exist
+
+        const { section, data } = req.body;
+
+        if (!section || !data) {
+            return res.status(400).json({ error: "Missing section or data" });
+        }
+
+        const newRecord = new Attendance({ section, data });
+        await newRecord.save();
+
+        res.status(200).json({ message: 'Saved to MongoDB' });
     } catch (error) {
-        console.error("Save error:", error);
-        res.status(500).json({ error: 'Failed to save', detail: error.message });
+        console.error("Error saving to MongoDB:", error);
+        res.status(500).json({ error: 'Failed to save' });
     }
 });
 
-});
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
