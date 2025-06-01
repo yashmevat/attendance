@@ -22,15 +22,19 @@ const attendanceSchema = new mongoose.Schema({
 const Attendance = mongoose.model('Attendance', attendanceSchema);
 
 app.post('/submit-attendance', async (req, res) => {
+    app.post('/submit-attendance', async (req, res) => {
     try {
-        console.log("saved")
-        console.log(req.body)
+        console.log("Received body:", req.body);
         const newRecord = new Attendance(req.body);
-        await newRecord.save();
-        res.status(200).json({ message: 'Saved to MongoDB' });
+        const saved = await newRecord.save();
+        console.log("Saved to DB:", saved);
+        res.status(200).json({ message: 'Saved to MongoDB', data: saved });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to save' });
+        console.error("Save error:", error);
+        res.status(500).json({ error: 'Failed to save', detail: error.message });
     }
+});
+
 });
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
