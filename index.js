@@ -35,6 +35,18 @@ const attendanceSchema = new mongoose.Schema({
 
 const Attendance = mongoose.model('Attendance', attendanceSchema);
 
+
+app.get('/get-attendance', async (req, res) => {
+  try {
+    const allAttendance = await Attendance.find({});
+    res.status(200).json(allAttendance);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch attendance' });
+  }
+});
+
+
+
 app.post('/submit-attendance', async (req, res) => {
   try {
     if (!req.body) {
